@@ -5,28 +5,35 @@ identity_token "aws" {
   audience = ["aws.workload.identity"]
 }
  
+/*store "varset" "aws_auth" {
+  name     = "project-aws-creds"
+  category = "env"
+}*/
+
 deployment "development" {
   inputs = {
     regions        = ["us-east-1"]
     role_arn       = "arn:aws:iam::891612569086:role/stacks-amora-hc-terraform-stacks"
+    #role_arn       = store.varset.aws_auth.stable.AWS_ROLE_ARN
     identity_token = identity_token.aws.jwt
     default_tags = {
       Stack       = "learn-stacks-deploy-aws",
       Environment = "dev"
     }
   }
-  destroy = true
+  #destroy = true
 }
 
 deployment "production" {
   inputs = {
     regions        = ["us-east-1", "us-west-1"]
     role_arn       = "arn:aws:iam::891612569086:role/stacks-amora-hc-terraform-stacks"
+    #role_arn       = store.varset.aws_auth.stable.AWS_ROLE_ARN
     identity_token = identity_token.aws.jwt
     default_tags = {
       Stack       = "learn-stacks-deploy-aws",
       Environment = "prod"
     }
   }
-  destroy = true
+  #destroy = true
 }
